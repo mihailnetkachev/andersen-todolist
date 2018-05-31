@@ -1,0 +1,172 @@
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  overflow: scroll;
+}
+
+body {
+  font-size: 16px;
+  min-width: 320px;
+  position: relative;
+  line-height: 1.65;
+  font-family: Georgia, serif;
+  overflow-x: hidden;
+  opacity: 1;
+}
+
+$dark: #081822;
+$main: #244769;
+$light: #eef5ee;
+$accent: #b5d1f1;
+$sub: #c1cc9c;
+
+$timeStandart: .2s;
+
+ul {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+%wrapper {
+  box-sizing: border-box;
+  margin: 0 auto;
+  padding: 4rem;
+  max-width: 640px;
+  background-color: rgba($dark, .75);
+}
+
+.wrapper {
+  min-height: 100vh;
+  background-color: $main;
+}
+
+.inputfield {
+  $size: 8rem;
+  padding-top: $size;
+  padding-bottom: $size;
+  background-image: url(../img/inputfield-bg.jpg);
+  background-repeat: no-repeat;
+  background-position: top;
+  background-size: cover;
+}
+
+.inputfield__form {
+  @extend %wrapper;
+  color: $light;
+}
+
+.inputfield__labelText {
+  display: block;
+}
+
+.inputfield__input,
+.inputfield__button {
+  padding: 1rem;
+}
+
+.inputfield__input {
+  box-sizing: border-box;
+  width: 100%;
+  border: none;
+  outline: none;
+
+  &:focus {
+    background-color: $light
+  }
+}
+
+.inputfield__button {
+  width: 100%;
+  border: none;
+  outline: none;
+  background-color: $main;
+  color: $light;
+  text-align: right;
+  cursor: pointer;
+  transition: $timeStandart;
+
+  &:hover {
+    background-color: $accent;
+    color: $main;
+  }
+}
+
+.taskfield {
+  color: $light;
+}
+
+.taskfield__header {
+  padding: 2rem 0;
+  text-align: center;
+  background-color: $dark;
+  color: $light;
+}
+
+.taskfield__list {
+  @extend %wrapper;
+  box-sizing: content-box;
+}
+
+.taskfield__item,
+.taskfield__itemLabel {
+  display: flex;
+  align-items: center;
+}
+
+.taskfield__item {
+  padding: 1rem 2rem;
+  border-top: 2px dotted $main;
+
+  &:first-child {
+    border-top: none;
+  }
+}
+
+.taskfield__itemLabel {
+  cursor: pointer;
+
+  &:hover {
+    color: $accent;
+  }
+}
+
+.taskfield__itemCheckbox:checked + .taskfield__itemText {
+  text-decoration: line-through;
+  color: $main;
+}
+
+.taskfield__itemCheckbox {
+  outline: none;
+}
+
+.taskfield__itemText {
+  margin: 0 1rem;
+}
+
+.taskfield__itemDelete {
+  $size: 2rem;
+  flex-shrink: 0;
+  margin-left: auto;
+  width: $size;
+  height: $size;
+  line-height: $size;
+  text-align: center;
+  border-radius: 50%;
+  transform: rotate(45deg);
+  background-color: $main;
+  color: $light;
+  font-weight: bold;
+  transition: $timeStandart;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $accent;
+    color: $main;
+  }
+}
+
+
