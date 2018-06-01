@@ -1,8 +1,7 @@
 import popper from 'popper.js';
 
 function getStorage() {
-  var tasks = JSON.parse(localStorage.getItem('tasks'));
-  return tasks;
+  return JSON.parse(localStorage.getItem('tasks'));
 }
 
 function setStorage(tasks) {
@@ -10,23 +9,30 @@ function setStorage(tasks) {
 }
 
 function renderStorage() {
-  var tasks = getStorage();
-
+  const tasks = getStorage();
+  let counter = 0;
   list.innerHTML = '';
 
   tasks.forEach(function (item) {
     list.appendChild(createHTMLConstruction(item));
+    if (!item.isComplete) {
+      counter++;
+    }
   });
+
+  headerCounter.textContent = counter;
 }
 
-function Task(options) {
-  this.id = options.id;
-  this.text = options.text;
-  this.isComplete = false;
+class Task {
+  constructor(options) {
+    this.id = options.id;
+    this.text = options.text;
+    this.isComplete = false;
+  }
 }
 
 function addTask(item) {
-  var tasks = getStorage();
+  const tasks = getStorage();
 
   if (!tasks) {
     setStorage([item]);
@@ -38,10 +44,10 @@ function addTask(item) {
 }
 
 function removeTask() {
-  var task = this.parentNode;
-  var tasks = getStorage();
+  let task = this.parentNode;
+  const tasks = getStorage();
 
-  tasks.forEach(function (item, index, array) {
+  tasks.forEach((item, index, array) => {
     if (item.id === +task.getAttribute('id')) {
       array.splice(index, 1);
     }
@@ -54,27 +60,25 @@ function removeTask() {
 }
 
 function triggeringComplete() {
-  var task = this.parentNode;
-  var tasks = getStorage();
+  let task = this.parentNode.parentNode;
+  const tasks = getStorage();
 
-  tasks.forEach(function (item, index, array) {
+  tasks.forEach((item) => {
     if (item.id === +task.getAttribute('id')) {
       item.isComplete = !item.isComplete;
     }
   });
-
-  console.log(task);
 
   setStorage(tasks);
   renderStorage();
 }
 
 function createHTMLConstruction(options) {
-  var listItem = document.createElement('li');
-  var label = document.createElement('label');
-  var input = document.createElement('input');
-  var span = document.createElement('span');
-  var a = document.createElement('a');
+  let listItem = document.createElement('li');
+  let label = document.createElement('label');
+  let input = document.createElement('input');
+  let span = document.createElement('span');
+  let a = document.createElement('a');
 
   listItem.classList.add('taskfield__item');
   listItem.setAttribute('id', options.id);
@@ -89,7 +93,7 @@ function createHTMLConstruction(options) {
   a.classList.add('taskfield__itemDelete');
   a.textContent = '+';
 
-  // label.onclick = triggeringComplete;
+  input.onclick = triggeringComplete;
   a.onclick = removeTask;
 
   label.appendChild(input);
@@ -100,9 +104,10 @@ function createHTMLConstruction(options) {
   return listItem;
 }
 
-var input = document.getElementById('inputfield__input');
-var button = document.getElementById('inputfield__button');
-var list = document.getElementById('taskfield__list');
+let input = document.getElementById('inputfield__input');
+let button = document.getElementById('inputfield__button');
+let list = document.getElementById('taskfield__list');
+let headerCounter = document.getElementById('taskfield__headerValue');
 
 button.addEventListener('click', function (event) {
   event.preventDefault();
@@ -111,14 +116,13 @@ button.addEventListener('click', function (event) {
     alert('To do nothing is a task too. Maybe.');
     return;
   }
-
-  var id = + new Date();
-  var newTask = new Task({
+  let id = +new Date();
+  const newTask = new Task({
     text: input.value,
     id: id
   });
   addTask(newTask);
-  input.value = ''
+  input.value = '';
 
   renderStorage();
 });

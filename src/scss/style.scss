@@ -61,6 +61,7 @@ ul {
 
 .inputfield__labelText {
   display: block;
+  padding: 1rem 0;
 }
 
 .inputfield__input,
@@ -86,6 +87,8 @@ ul {
   background-color: $main;
   color: $light;
   text-align: right;
+  font-family: Georgia, serif;
+  font-weight: bold;
   cursor: pointer;
   transition: $timeStandart;
 
