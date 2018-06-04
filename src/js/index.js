@@ -1,5 +1,3 @@
-import popper from 'popper.js';
-
 function getStorage() {
   return JSON.parse(localStorage.getItem('tasks'));
 }
@@ -10,10 +8,10 @@ function setStorage(tasks) {
 
 function renderStorage() {
   const tasks = getStorage();
-  let counter = 0;
+  let counter = '0';
   list.innerHTML = '';
 
-  tasks.forEach(function (item) {
+  tasks.forEach((item) => {
     list.appendChild(createHTMLConstruction(item));
     if (!item.isComplete) {
       counter++;

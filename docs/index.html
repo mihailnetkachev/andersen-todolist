@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<link rel="stylesheet" href="./css/style.bundle.css">
+</head>
+<body>
+	<div class="wrapper">
+		<div class="inputfield">
+			<form action="" class="inputfield__form">
+				<label for="inputfield__input" class="inputfield__label">
+					<span class="inputfield__labelText">Create a new task ...</span>
+					<input type="text" id="inputfield__input" class="inputfield__input" placeholder="Buy a bread">
+				</label>
+				<input type="submit" id="inputfield__button" class="inputfield__button" value="... add">
+			</form>
+		</div>
+		<div class="taskfield">
+			<div class="taskfield__header">
+				Number of your tasks:
+				<span id="taskfield__headerValue">0</span>
+			</div>
+			<ul class="taskfield__list" id="taskfield__list"></ul>
+		</div>
+	</div>
+	<script src="./js/bundle.js"></script>
+</body>
+</html>
