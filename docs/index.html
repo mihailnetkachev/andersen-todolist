@@ -21,7 +21,19 @@
 				Number of your tasks:
 				<span id="taskfield__headerValue">0</span>
 			</div>
+			<div class="searchfield">
+				<label class="searchfield__label">
+					<span class="searchfield__labelText">Find some task:</span>
+					<input type="text" id="searchfield__input" class="searchfield__input">
+				</label>
+			</div>
+			<ul class="taskfield__menu">
+				<li id="button__alphabetically" class="taskfield__menuItem">Alphabetically</li>
+				<li id="button__byDate" class="taskfield__menuItem">By date</li>
+				<li id="button__byEditingDate" class="taskfield__menuItem">By editing date</li>
+			</ul>
 			<ul class="taskfield__list" id="taskfield__list"></ul>
+			<ul id="taskfield__pageList" class="taskfield__menu"></ul>
 		</div>
 	</div>
 	<script src="./js/bundle.js"></script>
