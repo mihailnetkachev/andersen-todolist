@@ -6,36 +6,43 @@
 	<link rel="stylesheet" href="./css/style.bundle.css">
 </head>
 <body>
-	<div class="wrapper">
+	<div class="mainWrapper">
 		<div class="inputfield">
 			<form action="" class="inputfield__form">
-				<label for="inputfield__input" class="inputfield__label">
-					<span class="inputfield__labelText">Create a new task ...</span>
-					<input type="text" id="inputfield__input" class="inputfield__input" placeholder="Buy a bread">
+				<label class="inputfield__formLabel">
+					<span class="inputfield__formLabelText">Create a new task ...</span>
+					<input id="inputfield__formInput" type="text" class="inputfield__formInput">
 				</label>
-				<input type="submit" id="inputfield__button" class="inputfield__button" value="... add">
+				<input type="button" id="inputfield__formButton" class="inputfield__formButton" value="... аdd">
 			</form>
 		</div>
 		<div class="taskfield">
-			<div class="taskfield__header">
-				Number of your tasks:
-				<span id="taskfield__headerValue">0</span>
-			</div>
-			<div class="searchfield">
-				<label class="searchfield__label">
-					<span class="searchfield__labelText">Find some task:</span>
-					<input type="text" id="searchfield__input" class="searchfield__input">
-				</label>
-			</div>
-			<ul class="taskfield__menu">
-				<li id="button__alphabetically" class="taskfield__menuItem">Alphabetically</li>
-				<li id="button__byDate" class="taskfield__menuItem">By date</li>
-				<li id="button__byEditingDate" class="taskfield__menuItem">By editing date</li>
+			<ul class="taskfield__sortList">
+				<li id="taskfield__sortByNameButton" class="taskfield__sortButton">By Name</li>
+				<li id="taskfiled__sortByDateButton" class="taskfield__sortButton">By Date</li>
 			</ul>
-			<ul class="taskfield__list" id="taskfield__list"></ul>
-			<ul id="taskfield__pageList" class="taskfield__menu"></ul>
+			<ul id="taskfield__taskList" class="taskfield__taskList"></ul>
+			<ul class="taskfield__pageList"></ul>
 		</div>
 	</div>
+
+	<!--<li class="taskfield__taskItem">
+		<label class="taskfield__itemTaskField">
+			<input type="checkbox" class="taskfield__itemCheckbox">
+			<span class="taskfield__itemText">Walk with the dog, for example</span>
+		</label>
+		<div class="taskfield__itemOptions">
+			<span class="taskfield__itemDate">6.6.2018</span>
+			<a href="#" class="taskfield__itemEditButton">Edit</a>
+			<a href="#" class="taskfield__itemDeleteButton">+</a>
+		</div>
+		<div class="taskfield__tooltip">
+			<input type="text" class="taskfield__tooltipInputField" placeholder="I have changed my mind ...">
+			<input type="submit" class="taskfield__tooltipButton" value="Edit">
+		</div>
+	</li>-->
+
 	<script src="./js/bundle.js"></script>
+
 </body>
 </html>

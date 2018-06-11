@@ -1,3 +1,53 @@
+$dark: #081822;
+$main: #244769;
+$light: #eef5ee;
+$accent: #b5d1f1;
+$sub: #c1cc9c;
+
+$font: Georgia, serif;
+
+@mixin roundButton ($bgColor, $color, $size: 2rem) {
+  display: inline-block;
+  border-radius: 50%;
+  width: $size;
+  height: $size;
+  background-color: $bgColor;
+  color: $color;
+  text-align: center;
+  line-height: $size;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $color;
+    color: $bgColor;
+  }
+}
+
+@mixin squareButton ($bgColor, $color) {
+  $size: 2rem;
+  display: inline-block;
+  border-radius: 5px;
+  padding: 0 .5rem;
+  height: $size;
+  line-height: $size;
+  text-align: center;
+  background-color: $bgColor;
+  color: $color;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $color;
+    color: $bgColor;
+  }
+}
+
+%wrapper {
+  margin: 0 auto;
+  max-width: 40rem;
+}
+
+// general
+
 html, body {
   height: 100%;
   margin: 0;
@@ -12,18 +62,11 @@ body {
   min-width: 320px;
   position: relative;
   line-height: 1.65;
-  font-family: Georgia, serif;
+  font-family: $font;
   overflow-x: hidden;
   opacity: 1;
+  color: $dark;
 }
-
-$dark: #081822;
-$main: #244769;
-$light: #eef5ee;
-$accent: #b5d1f1;
-$sub: #c1cc9c;
-
-$timeStandart: .2s;
 
 ul {
   margin: 0;
@@ -31,277 +74,198 @@ ul {
   list-style-type: none;
 }
 
-%wrapper {
-  box-sizing: border-box;
-  margin: 0 auto;
-  padding: 4rem;
-  max-width: 640px;
-  background-color: rgba($dark, .75);
+a {
+  text-decoration: none;
+  color: inherit;
 }
 
-.wrapper {
-  min-height: 100vh;
-  background-color: $main;
-}
-
-.tooltip {
-  position: absolute;
-  left: 0;
-  bottom: 100%;
-  z-index: 10;
-  padding: .5rem 1rem;
-  border-radius: 5px;
-  background-color: $accent;
-  display: flex;
-  align-items: center;
-
-  &:before {
-    content: '';
-    display: block;
-    position: absolute;
-    left: 50%;
-    top: 100%;
-    z-index: 5;
-    transform-origin: center;
-    transform: translate(-50%, -50%) rotate(45deg);
-    $size: .5rem;
-    width: $size;
-    height: $size;
-    background-color: $accent;
-  }
-}
-
-.tooltip__inputField {
-  padding: .5rem;
-  border: none;
-}
-
-.tooltip__inputButton {
-  margin-left: 0.5rem;
-  border-radius: 5px;
-  height: 2rem;
-  line-height: 2rem;
-  padding: 0 .5rem;
-  background-color: $main;
-  color: $light;
-  transition: $timeStandart;
-  cursor: pointer;
-  border: none;
-
-  &:hover {
-    background-color: $light;
-    color: $main;
-  }
-}
-
-
-.inputfield {
-  $size: 8rem;
-  padding-top: $size;
-  padding-bottom: $size;
-  background-image: url(../img/inputfield-bg.jpg);
-  background-repeat: no-repeat;
-  background-position: top;
-  background-size: cover;
-}
+// inputfield
 
 .inputfield__form {
   @extend %wrapper;
-  color: $light;
+  padding: 0 2rem;
 }
 
-.inputfield__labelText {
+.inputfield__formLabel,
+.inputfield__formLabelText,
+.inputfield__formInput {
   display: block;
+}
+
+.inputfield__formLabelText {
   padding: 1rem 0;
-}
-
-.inputfield__input,
-.inputfield__button {
-  padding: 1rem;
-}
-
-.inputfield__input {
-  box-sizing: border-box;
-  width: 100%;
-  border: none;
-  outline: none;
-
-  &:focus {
-    background-color: $light
-  }
-}
-
-.inputfield__button {
-  width: 100%;
-  border: none;
-  outline: none;
-  background-color: $main;
-  color: $light;
-  text-align: right;
-  font-family: Georgia, serif;
+  text-align: center;
   font-weight: bold;
-  cursor: pointer;
-  transition: $timeStandart;
+}
 
-  &:hover {
-    background-color: $accent;
-    color: $main;
-  }
+.inputfield__formInput {
+  box-sizing: border-box;
+  outline: none;
+  border-color: $main;
+  border-style: solid;
+  padding: .5rem;
+  width: 100%;
+  font-family: $font;
+}
+
+.inputfield__formButton {
+  @include squareButton($main, $light);
+  outline: none;
+  border: none;
+  border-radius: 0;
+  width: 100%;
+  font-family: $font;
+  font-weight: bold;
+}
+
+// taskfield
+
+%taskfield__section {
+  @extend %wrapper;
+  padding: 1rem 2rem;
 }
 
 .taskfield {
-  color: $light;
-}
-
-.taskfield__header {
   padding: 2rem 0;
-  text-align: center;
-  background-color: $dark;
-  color: $light;
 }
 
-.taskfield__menu {
-  padding: 1rem 0;
+.taskfield__sortList {
+  @extend %taskfield__section;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.taskfield__menuItem {
-  margin-left: 1rem;
-  padding: .25rem .5rem;
-  border-radius: 5px;
-  background-color: $sub;
-  color: $dark;
-  cursor: pointer;
-  transition: $timeStandart;
-
-  &:first-child {
-    margin-left: 0;
-  }
-  &:hover {
-    background-color: $light;
-  }
-}
-
-.taskfield__page {
-  $size: 2rem;
+.taskfield__sortButton {
+  @include squareButton($sub, $dark);
   margin-left: .5rem;
-  width: $size;
-  height: $size;
-  line-height: $size;
-  border-radius: 50%;
-  background-color: $sub;
-  text-align: center;
-  color: $dark;
-  cursor: pointer;
 
   &:first-child {
     margin-left: 0;
   }
 }
 
-.taskfield__list {
-  @extend %wrapper;
-  box-sizing: content-box;
+.taskfield__taskList {
+  @extend %taskfield__section;
 }
 
-.taskfield__item,
-.taskfield__itemLabel {
+.taskfield__taskItem,
+.taskfield__itemTaskField,
+.taskfield__itemOptions{
   display: flex;
   align-items: center;
 }
 
-.taskfield__item {
+.taskfield__taskItem {
   position: relative;
-  padding: 1rem 2rem;
-  border-top: 2px dotted $main;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  padding: 1rem;
+  border-top: 5px dotted $main;
 
   &:first-child {
     border-top: none;
   }
 }
 
-.taskfield__itemLabel {
-  cursor: pointer;
-  margin-right: auto;
-
-  &:hover {
-    color: $accent;
-  }
-}
-
-.taskfield__itemCheckbox:checked + .taskfield__itemText {
-  text-decoration: line-through;
-  color: $main;
-}
-
 .taskfield__itemCheckbox {
-  outline: none;
-}
+  margin: 0;
 
-.taskfield__itemText {
-  margin: 0 1rem;
-}
-
-.taskfield__itemDelete {
-  $size: 2rem;
-  flex-shrink: 0;
-  margin-left: 0.5rem;
-  width: $size;
-  height: $size;
-  line-height: $size;
-  text-align: center;
-  border-radius: 50%;
-  transform: rotate(45deg);
-  background-color: $main;
-  color: $light;
-  font-weight: bold;
-  transition: $timeStandart;
-  cursor: pointer;
-
-  &:hover {
-    background-color: $accent;
+  &:checked + .taskfield__itemText {
+    text-decoration: line-through;
     color: $main;
   }
 }
 
-.taskfield__itemDate {
-  font-size: .75rem;
-  margin-left: 0.5rem;
-  color: $sub;
+.taskfield__itemText {
+  margin-left: .5rem;
 }
 
-.taskfield__itemEdit {
-  margin-left: 0.5rem;
-  border-radius: 5px;
-  height: 2rem;
-  line-height: 2rem;
-  padding: 0 .5rem;
-  background-color: $accent;
-  color: $main;
-  transition: $timeStandart;
-  cursor: pointer;
+.taskfield__itemDate,
+.taskfield__itemEditButton,
+.taskfield__itemDeleteButton {
+  margin-left: .5rem;
+}
 
-  &:hover {
-    background-color: $main;
-    color: $accent;
+.taskfield__itemDate {
+  padding: 0 .5rem;
+}
+
+.taskfield__itemEditButton {
+  @include squareButton($accent, $main);
+}
+
+.taskfield__itemDeleteButton {
+ @include roundButton($main, $light);
+  transform-origin: center;
+  transform: rotate(45deg);
+}
+
+.taskfield__pageList {
+  @extend %taskfield__section;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.taskfield__pageItem {
+  @include roundButton($sub, $dark);
+  margin-left: .5rem;
+
+  &:first-child {
+    margin-left: 0;
   }
 }
 
-.searchfield {
-  @extend %wrapper;
-  margin-top: 2rem;
-  padding: 2rem;
+.taskfield__tooltip {
+  position: absolute;
+  bottom: 80%;
+  left: 50%;
+  transform-origin: center;
+  transform: translateX(-50%);
+  z-index: 10;
+  display: flex;
+  padding: .5rem 1rem;
+  background-color: $accent;
+  color: $dark;
+
+  &:before {
+    $size: .5rem;
+    content: '';
+    display: block;
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform-origin: center;
+    transform: translate(-50%, -50%) rotate(45deg);
+    width: $size;
+    height: $size;
+    background-color: inherit;
+  }
 }
 
-.searchfield__labelText {
-  display: block;
-  text-align: center;
+.taskfield__tooltipInputField {
+  outline: none;
+  border-color: $main;
+  border-style: solid;
+  padding: 0 .5rem;
+  width: 12rem;
+  font-family: $font;
 }
 
-.searchfield__input {
-  @extend .inputfield__input;
-  background-color: $sub;
-  margin-top: 1rem;
+.taskfield__tooltipChangeButton {
+  @include squareButton($main, $light);
+  outline: none;
+  border: none;
+  border-radius: 0;
+  font-family: $font;
+}
+
+.taskfield__tooltipCloseButton {
+  @include roundButton($main, $light, 1rem);
+  position: absolute;
+  top: 0;
+  right: 0;
+  transform-origin: center;
+  transform: translate(50%, -50%) rotate(45deg);
 }
