@@ -1,4 +1,5 @@
 import Task from './task';
+import createDate from './date-creator';
 import {getElement, removeElement} from './dom-manipulation';
 import {getStorage, addToStorage, removeFromStorage, changeInStorage, completeInStorage} from './storage';
 import {createListItem as createListItemHTML,
@@ -18,7 +19,7 @@ class ToDoList {
     this.renderValue = 3;
 
     this.addHandlers();
-    this.renderAll({});
+    this.render({});
   }
 
   addHandlers() {
@@ -26,17 +27,53 @@ class ToDoList {
       this.addTask({creatingDate: +(new Date), text: this.formInput.value});
       this.formInput.value = '';
     };
+
     this.sortByNameButton.onclick = () => {
-      this.renderAll({sort: 'text'});
+      this.render({sort: 'text'});
     };
+
     this.sortByDateButton.onclick = () => {
-      this.renderAll({sort: 'creatingDate'});
+      this.render({sort: 'creatingDate'});
+    };
+
+    this.htmlNode.onclick = (event) => {
+      const target = event.target;
+
+      if (target.tagName === 'UL' || target.tagName === 'LI') {
+        return;
+      }
+
+      if (target.getAttribute('type') === 'checkbox') {
+        const itemTaskId = +target.parentNode.parentNode.getAttribute('data-creatingDate');
+
+        this.completeTask(itemTaskId);
+      }
+
+      if (target.getAttribute('data-type') === 'editButton') {
+        const itemTask = target.parentNode.parentNode;
+        const textField = itemTask.querySelector('.taskfield__itemText');
+
+        itemTask.appendChild(this._createTooltipNode(createTooltipHTML(), textField.textContent));
+      }
+
+      if (target.getAttribute('data-type') === 'deleteButton') {
+        const itemTask = target.parentNode.parentNode;
+        const itemTaskId = +itemTask.getAttribute('data-creatingDate');
+
+        this.removeTask(itemTaskId);
+        removeElement(itemTask);
+      }
     };
   }
 
-  renderAll({sort}) {
-    console.log(sort);
+  render({sort, index}) {
     const tasksToRender = this.tasks;
+    const startFrom = (index) ? index : 0;
+    const renderTo = startFrom + this.renderValue;
+
+    if (tasksToRender.length === 0) {
+      return;
+    }
 
     if (sort) {
       this._sortTasks(tasksToRender, sort);
@@ -44,9 +81,12 @@ class ToDoList {
 
     this.htmlNode.innerHTML = '';
 
-    tasksToRender.forEach((currentTask) => {
-      this.htmlNode.appendChild(this._createTaskNode(createListItemHTML(), currentTask));
+    tasksToRender.forEach((currentItem, currentIndex) => {
+      if (currentIndex >= startFrom && currentIndex < renderTo) {
+        this.htmlNode.appendChild(this._createTaskNode(createListItemHTML(), currentItem));
+      }
     });
+
     this._createPages();
   }
 
@@ -56,6 +96,10 @@ class ToDoList {
     this._addToLocalSession(newTask);
     addToStorage(newTask);
 
+    // TODO: обработать порядок добавления элементов, если уже есть 3, то ...?
+    if (this.htmlNode.children.length >= 3) {
+
+    }
     this.htmlNode.appendChild(this._createTaskNode(createListItemHTML(), newTask));
     this._createPages();
   }
@@ -67,6 +111,7 @@ class ToDoList {
   removeTask(id) {
     this._removeFromLocalSession(id);
     removeFromStorage(id);
+    this._createPages();
   }
 
   _removeFromLocalSession(id) {
@@ -107,42 +152,16 @@ class ToDoList {
 
   _createTaskNode(taskHTML, taskObject) {
     const checkbox = taskHTML.querySelector('.taskfield__itemCheckbox');
-    const textField =  taskHTML.querySelector('.taskfield__itemText');
-    const editButton = taskHTML.querySelector('.taskfield__itemEditButton');
-    const deleteButton = taskHTML.querySelector('.taskfield__itemDeleteButton');
+    const textField = taskHTML.querySelector('.taskfield__itemText');
+    const itemDate = taskHTML.querySelector('.taskfield__itemDate');
 
     if (taskObject.completed) {
       checkbox.setAttribute('checked', 'checked');
     }
+
     taskHTML.setAttribute('data-creatingDate', taskObject.creatingDate);
     textField.textContent = taskObject.text;
-    editButton.textContent = 'Edit';
-    deleteButton.textContent = '+';
-
-    checkbox.onclick = () => {
-      const itemTaskId = +event.target.parentNode.parentNode.getAttribute('data-creatingDate');
-
-      this.completeTask(itemTaskId);
-    };
-
-    editButton.onclick = (event) => {
-      event.preventDefault();
-
-      const itemTask = event.target.parentNode.parentNode;
-
-      itemTask.appendChild(this._createTooltipNode(createTooltipHTML(), textField.textContent));
-
-    };
-
-    deleteButton.onclick = (event) => {
-      event.preventDefault();
-
-      const itemTask = event.target.parentNode.parentNode;
-      const itemTaskId = +itemTask.getAttribute('data-creatingDate');
-
-      this.removeTask(itemTaskId);
-      removeElement(itemTask);
-    };
+    itemDate.textContent = createDate(taskObject.creatingDate);
 
     return taskHTML;
   }
@@ -184,18 +203,31 @@ class ToDoList {
 
   _createPages() {
     const taskNumber = this.tasks.length;
-    const numberOfPages = Math.ceil(taskNumber / this.renderValue);
+    const pageList = this.pageListNode;
+    const existingPagesNumber = pageList.children.length;
+    const pagesNeededNumber = Math.ceil(taskNumber / this.renderValue);
+    const extraPagesNumber = existingPagesNumber - pagesNeededNumber;
+    let currentIndex = existingPagesNumber * this.renderValue;
 
-    if (this.pageListNode.children.length > numberOfPages) {
-      return;
+    if (extraPagesNumber < 0) {
+      for (let i = 0; i < Math.abs(extraPagesNumber); i++) {
+        const newPage = createPageIconHTML();
+
+        newPage.setAttribute('data-index', currentIndex);
+        currentIndex += this.renderValue;
+
+        newPage.onclick = (event) => {
+          this.render({index: +event.target.getAttribute('data-index')});
+        };
+
+        pageList.appendChild(newPage);
+      }
     }
-    // TODO: грамотно посчитать количество элементов и рассчитать количество листов.
-    // Например, получать число детей, сравнивать с текущим количеством детей, вычитатать разницу
-    // Например 2, тогда добавляем два элемента
-    // Например -2, тогда удаляем два элемента
-    for (let i = 0; i < numberOfPages; i++) {
-      // Добавить callback'и номера -- может через CSS?
-      this.pageListNode.appendChild(createPageIconHTML());
+
+    if (extraPagesNumber > 0) {
+      for (let i = 0; i < extraPagesNumber; i++) {
+        pageList.removeChild(pageList.lastChild);
+      }
     }
   }
 

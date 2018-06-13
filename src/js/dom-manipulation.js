@@ -1,11 +1,11 @@
 // Модуль позволяет искать элементы в DOM-структуре
 
-function getElement(selector, flag) {
+function getElement(selector, flag, element) {
   switch (flag) {
     case 'id':
       return document.getElementById(selector);
     case 'class':
-      return document.getElementsByClassName(selector)[0];
+      return (element) ? element.getElementsByClassName(selector)[0] : document.getElementsByClassName(selector)[0];
   }
 }
 

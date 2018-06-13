@@ -22,6 +22,8 @@ function createListItem() {
   const itemDeleteButton = createElement('a', blockName + 'itemDeleteButton');
 
   itemCheckbox.setAttribute('type', 'checkbox');
+  itemEditButton.setAttribute('data-type', 'editButton');
+  itemDeleteButton.setAttribute('data-type', 'deleteButton');
 
   itemTaskField.appendChild(itemCheckbox);
   itemTaskField.appendChild(itemText);

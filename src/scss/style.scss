@@ -193,12 +193,22 @@ a {
 
 .taskfield__itemEditButton {
   @include squareButton($accent, $main);
+
+  &:after {
+    content: 'Edit';
+    display: inline;
+  }
 }
 
 .taskfield__itemDeleteButton {
  @include roundButton($main, $light);
   transform-origin: center;
   transform: rotate(45deg);
+
+  &:after {
+    content: '+';
+    display: inline;
+  }
 }
 
 .taskfield__pageList {
@@ -206,14 +216,21 @@ a {
   display: flex;
   justify-content: center;
   align-items: center;
+  counter-reset: pageList;
 }
 
 .taskfield__pageItem {
   @include roundButton($sub, $dark);
   margin-left: .5rem;
+  counter-increment: pageList 1;
 
   &:first-child {
     margin-left: 0;
+  }
+
+  &:after {
+    content: counter(pageList);
+    display: inline;
   }
 }
 
